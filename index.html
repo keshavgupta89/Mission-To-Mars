@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      table {
+        table-layout: fixed;
+        width: 100%;
+        word-wrap: break-word; 
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mission to Mars</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    ​<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href='/static/style.css'>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Add Jumbotron to Header -->
+      <div class="jumbotron bg-dark text-warning text-center">
+        <h1>Mission to Mars</h1>
+        <p>Latest News about Mars</p>
+        <!-- Add a button to activate scraping script -->
+        <p>
+          <div class="alert alert-warning alert-dismissible text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Alert!</strong> Scraping new data may result in the loss of current data
+          </div>
+          <a class="btn btn-danger btn-lg text-warning" href="/scrape" role="button">Scrape New Data</a>
+        </p>
+      </div>
+
+      <!-- Add section for Mars News -->
+      <div class="row" id="mars-news">
+        <div class="col-md-12">
+            <div class="box border bg-light border-dark rounded m-2 p-0">
+              <div class="h3 bg-dark text-warning p-2">
+                <i class="fas fa-rss-square"></i> Latest Mars News:
+              </div>
+              <div class="h3 pl-2">{{ mars.news_title }} :</div>
+              <div class="p ml-2 pb-2">{{ mars.news_paragraph }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section for Featured Image and Facts table -->
+      <div class="row" id="mars-featured-image-facts">
+        <div class="col-md-8" id="mars-featured-image">
+          <div class="box border bg-light border-dark rounded m-2 p-0">
+            <div class="h3 bg-dark text-warning p-2">
+              <i class="fas fa-image"></i> Featured Mars Image
+            </div>
+
+            <!-- if images is False/None/non-existent, then default to error message -->
+            <img class="img-fluid img-thumbnail rounded-lg"
+              src="{{mars.featured_image | default('static/images/error.png', true) }}"
+              alt="Responsive image"
+            />
+          </div>
+        </div>
+        <!-- Mars Facts -->
+        <div class="col-md-4" id="mars-facts">
+          <div class="box border rounded border-dark bg-light m-2 p-0">
+            <div class="h4 bg-dark text-warning p-2">
+              <i class="fas fa-info-circle"></i> Mars Facts
+            </div>
+            <table class="table-striped table-light table-hover table-bordered table-sm">
+            <thead class="bg-warning text-dark text-center"> <tr> 
+              {{ mars.facts | safe }}
+          </div>
+        </div>
+      </div>
+      <!-- Section for Mars Hemispheres -->
+      <div class="row" id="mars-hemispheres">
+        <div class="col-md-12">
+          <div class="box border rounded border-dark bg-dark m-2 p-4">
+            <div class="text-center h3 bg-dark text-warning">
+              <i class="fas fa-globe"></i> Mars Hemispheres
+            </div>
+          </div>      
+          <div class="row">
+            {% for hemisphere in mars.hemispheres %}
+            <div class="col-md-3 pb-3 p-1">        
+              <div class="h3 text-center p-1 mt-2 m-0 bg-link text-black">
+                {{hemisphere.title}}
+              </div>
+              <img src="{{hemisphere.img_url | default('static/images/error.png', true)}}" class="rounded" width=100%>
+            </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </body>
+
+  <!-- jQuery library -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <!-- Initialize Bootstrap functionality -->
+  <script>
+  // Initialize tooltip component
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
+  // Initialize popover component
+  $(function () {
+    $('[data-toggle="popover"]').popover()
+  })
+
+  </script>
+</html>
